@@ -29,13 +29,8 @@ Backend GraphQL: http://localhost:4000/graphql
 
 ## Deployment Details
 
-<<<<<<< HEAD
 Frontend URL:  https://101488574-comp3133-assignment2.vercel.app/
 Backend GraphQL URL:  101488574comp3133assignment2-production.up.railway.app
-=======
-Frontend URL: 101488574-comp3133-assignment2.vercel.app
-Backend GraphQL URL: 101488574comp3133assignment2-production.up.railway.app
->>>>>>> 20e3c1a521948c6e4e3d66f088c96ce72509e89e
 GitHub Repository: https://github.com/GustavoMiranda2/101488574_comp3133_assignment2.git
 
 ## Test Account
