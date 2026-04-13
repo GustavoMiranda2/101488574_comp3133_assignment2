@@ -1,0 +1,52 @@
+.hero-action-stack {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.profile-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.profile-hero-card {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.profile-photo {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 28px;
+}
+
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.detail-tile {
+  padding: 1rem 1.05rem;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tile-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--ink-muted);
+  font-size: 0.86rem;
+}
+
+@media (min-width: 768px) {
+  .detail-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .profile-grid {
+    grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+  }
+}

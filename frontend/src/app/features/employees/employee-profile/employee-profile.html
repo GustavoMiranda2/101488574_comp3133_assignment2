@@ -1,0 +1,94 @@
+<section class="midnight-page">
+  <div class="page-shell container py-4">
+    <header class="hero-shell mb-4">
+      <div>
+        <p class="eyebrow-label">Employee Details</p>
+        <h1 class="hero-title">View employee details</h1>
+        <p class="hero-copy">
+          Check the current employee information, then update or remove the record if needed.
+        </p>
+      </div>
+
+      <div class="hero-action-stack">
+        <div class="profile-chip">Signed in as <strong>{{ signedUserName }}</strong></div>
+        <div class="action-row action-row-tight">
+          <a routerLink="/employees" class="ghost-orchid-button text-decoration-none">
+            Back to list
+          </a>
+          <button type="button" class="ghost-orchid-button" (click)="goLogout()">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    @if (pageFlash) {
+      <div class="alert-strip danger-strip mb-4">{{ pageFlash }}</div>
+    }
+
+    @if (isPageBusy) {
+      <section class="orchid-card">
+        <div class="empty-state">Loading employee details...</div>
+      </section>
+    } @else if (employeeBloom) {
+      <section class="profile-grid">
+        <article class="orchid-card profile-hero-card">
+          <img
+            [src]="employeeBloom.employee_photo"
+            [alt]="employeeBloom.first_name + ' photo'"
+            class="profile-photo"
+          />
+
+          <div class="profile-title-block">
+            <p class="eyebrow-label">Current employee</p>
+            <h2 class="section-title mb-1">
+              {{ employeeBloom.first_name }} {{ employeeBloom.last_name }}
+            </h2>
+            <p class="section-copy mb-0">
+              {{ employeeBloom.designation }} in {{ employeeBloom.department }}
+            </p>
+          </div>
+
+          <div class="action-row">
+            <a
+              [routerLink]="['/employees', employeeBloom._id, 'edit']"
+              class="solid-orchid-button text-decoration-none"
+            >
+              Update Employee
+            </a>
+            <button type="button" class="ghost-danger-button" (click)="eraseEmployee()">
+              Delete Employee
+            </button>
+          </div>
+        </article>
+
+        <article class="orchid-card">
+          <div class="detail-grid">
+            <div class="detail-tile">
+              <span class="tile-label">Email</span>
+              <strong>{{ employeeBloom.email }}</strong>
+            </div>
+            <div class="detail-tile">
+              <span class="tile-label">Gender</span>
+              <strong>{{ employeeBloom.gender }}</strong>
+            </div>
+            <div class="detail-tile">
+              <span class="tile-label">Salary</span>
+              <strong>{{ employeeBloom.salary | plumSalary }}</strong>
+            </div>
+            <div class="detail-tile">
+              <span class="tile-label">Joined</span>
+              <strong>{{ employeeBloom.date_of_joining | date: 'mediumDate' }}</strong>
+            </div>
+            <div class="detail-tile">
+              <span class="tile-label">Department</span>
+              <strong>{{ employeeBloom.department }}</strong>
+            </div>
+            <div class="detail-tile">
+              <span class="tile-label">Position</span>
+              <strong>{{ employeeBloom.designation }}</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+    }
+  </div>
+</section>

@@ -1,0 +1,117 @@
+<section class="midnight-page">
+  <div class="page-shell container py-4 py-lg-5">
+    <div class="auth-grid">
+      <article class="hero-shell auth-story">
+        <p class="eyebrow-label">Account Setup</p>
+        <h1 class="hero-title">Create a fresh access point for the employee workspace.</h1>
+        <p class="hero-copy">
+          Register your user, store the session token locally, and move directly into the roster
+          dashboard after signup.
+        </p>
+
+        <div class="story-points">
+          <div class="story-chip">
+            <span class="story-chip-title">Validation ready</span>
+            <small>Each field gives direct guidance when the input is incomplete.</small>
+          </div>
+          <div class="story-chip">
+            <span class="story-chip-title">GraphQL signup</span>
+            <small>The account is created through the backend schema instead of a REST route.</small>
+          </div>
+          <div class="story-chip">
+            <span class="story-chip-title">Local session</span>
+            <small>The returned token is stored so protected routes can stay guarded.</small>
+          </div>
+        </div>
+      </article>
+
+      <article class="orchid-card auth-card">
+        <div class="card-topline">
+          <div>
+            <p class="eyebrow-label">New account</p>
+            <h2 class="section-title mb-1">Signup</h2>
+            <p class="section-copy mb-0">Fill in the form below to open your access.</p>
+          </div>
+          <span class="soft-pill">GraphQL mutation</span>
+        </div>
+
+        @if (entryFlash) {
+          <div class="alert-strip danger-strip">{{ entryFlash }}</div>
+        }
+
+        <form [formGroup]="bloomForm" (ngSubmit)="submitBloom()" class="form-stack">
+          <div>
+            <label class="field-label" for="username">Username</label>
+            <input
+              appFocusViolet
+              id="username"
+              type="text"
+              class="orchid-input"
+              formControlName="username"
+              placeholder="gustavo.miranda"
+            />
+            @if (fieldNote('username')) {
+              <small class="field-error">{{ fieldNote('username') }}</small>
+            }
+          </div>
+
+          <div>
+            <label class="field-label" for="email">Email</label>
+            <input
+              appFocusViolet
+              id="email"
+              type="email"
+              class="orchid-input"
+              formControlName="email"
+              placeholder="gustavo@email.com"
+            />
+            @if (fieldNote('email')) {
+              <small class="field-error">{{ fieldNote('email') }}</small>
+            }
+          </div>
+
+          <div class="split-fields">
+            <div>
+              <label class="field-label" for="password">Password</label>
+              <input
+                appFocusViolet
+                id="password"
+                type="password"
+                class="orchid-input"
+                formControlName="password"
+                placeholder="Create a password"
+              />
+              @if (fieldNote('password')) {
+                <small class="field-error">{{ fieldNote('password') }}</small>
+              }
+            </div>
+
+            <div>
+              <label class="field-label" for="confirmPassword">Confirm Password</label>
+              <input
+                appFocusViolet
+                id="confirmPassword"
+                type="password"
+                class="orchid-input"
+                formControlName="confirmPassword"
+                placeholder="Repeat the password"
+              />
+              @if (fieldNote('confirmPassword')) {
+                <small class="field-error">{{ fieldNote('confirmPassword') }}</small>
+              }
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="solid-orchid-button" type="submit" [disabled]="isSendingBloom">
+              {{ isSendingBloom ? 'Creating...' : 'Signup' }}
+            </button>
+            <a routerLink="/login" class="ghost-orchid-button text-decoration-none text-center">
+              Back to login
+            </a>
+          </div>
+        </form>
+      </article>
+    </div>
+  </div>
+</section>

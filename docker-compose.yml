@@ -1,0 +1,18 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    env_file:
+      - ./backend/.env
+    environment:
+      FRONTEND_ORIGIN: http://localhost:4200
+    ports:
+      - '4000:4000'
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - '4200:4200'

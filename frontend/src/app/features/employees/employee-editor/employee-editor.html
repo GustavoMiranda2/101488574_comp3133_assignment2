@@ -1,0 +1,230 @@
+<section class="midnight-page">
+  <div class="page-shell container py-4">
+    <header class="hero-shell mb-4">
+      <div>
+        <p class="eyebrow-label">Employee Editor</p>
+        <h1 class="hero-title">{{ editorTitle }}</h1>
+        <p class="hero-copy">
+          {{ isEditMode
+            ? 'Refresh the employee details and keep the roster consistent.'
+            : 'Add a new employee with validation messages and profile picture upload.' }}
+        </p>
+      </div>
+
+      <div class="hero-action-stack">
+        <div class="profile-chip">Signed in as <strong>{{ signedUserName }}</strong></div>
+        <div class="action-row action-row-tight">
+          <a routerLink="/employees" class="ghost-orchid-button text-decoration-none">
+            Back to list
+          </a>
+          <button type="button" class="ghost-orchid-button" (click)="goLogout()">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="editor-grid">
+      <article class="orchid-card">
+        <div class="card-topline">
+          <div>
+            <p class="eyebrow-label">Form details</p>
+            <h2 class="section-title mb-1">{{ editorTitle }}</h2>
+            <p class="section-copy mb-0">
+              Fill in all required fields before saving the employee record.
+            </p>
+          </div>
+          <span class="soft-pill">{{ isEditMode ? 'Update mode' : 'Create mode' }}</span>
+        </div>
+
+        @if (editorFlash) {
+          <div class="alert-strip danger-strip">{{ editorFlash }}</div>
+        }
+
+        <form [formGroup]="plumDraftForm" (ngSubmit)="submitEditor()" class="form-stack">
+          <div class="split-fields">
+            <div>
+              <label class="field-label" for="first_name">First Name</label>
+              <input
+                appFocusViolet
+                id="first_name"
+                type="text"
+                class="orchid-input"
+                formControlName="first_name"
+                placeholder="Gustavo"
+              />
+              @if (fieldNote('first_name')) {
+                <small class="field-error">{{ fieldNote('first_name') }}</small>
+              }
+            </div>
+
+            <div>
+              <label class="field-label" for="last_name">Last Name</label>
+              <input
+                appFocusViolet
+                id="last_name"
+                type="text"
+                class="orchid-input"
+                formControlName="last_name"
+                placeholder="Miranda"
+              />
+              @if (fieldNote('last_name')) {
+                <small class="field-error">{{ fieldNote('last_name') }}</small>
+              }
+            </div>
+          </div>
+
+          <div class="split-fields">
+            <div>
+              <label class="field-label" for="email">Email</label>
+              <input
+                appFocusViolet
+                id="email"
+                type="email"
+                class="orchid-input"
+                formControlName="email"
+                placeholder="employee@email.com"
+              />
+              @if (fieldNote('email')) {
+                <small class="field-error">{{ fieldNote('email') }}</small>
+              }
+            </div>
+
+            <div>
+              <label class="field-label" for="gender">Gender</label>
+              <select
+                appFocusViolet
+                id="gender"
+                class="orchid-input"
+                formControlName="gender"
+              >
+                <option value="">Select a gender</option>
+                @for (genderChoice of genderChoices; track genderChoice) {
+                  <option [value]="genderChoice">{{ genderChoice }}</option>
+                }
+              </select>
+              @if (fieldNote('gender')) {
+                <small class="field-error">{{ fieldNote('gender') }}</small>
+              }
+            </div>
+          </div>
+
+          <div class="split-fields">
+            <div>
+              <label class="field-label" for="designation">Position</label>
+              <input
+                appFocusViolet
+                id="designation"
+                type="text"
+                class="orchid-input"
+                formControlName="designation"
+                placeholder="Software Engineer"
+              />
+              @if (fieldNote('designation')) {
+                <small class="field-error">{{ fieldNote('designation') }}</small>
+              }
+            </div>
+
+            <div>
+              <label class="field-label" for="department">Department</label>
+              <input
+                appFocusViolet
+                id="department"
+                type="text"
+                class="orchid-input"
+                formControlName="department"
+                placeholder="Engineering"
+              />
+              @if (fieldNote('department')) {
+                <small class="field-error">{{ fieldNote('department') }}</small>
+              }
+            </div>
+          </div>
+
+          <div class="split-fields">
+            <div>
+              <label class="field-label" for="salary">Salary</label>
+              <input
+                appFocusViolet
+                id="salary"
+                type="number"
+                class="orchid-input"
+                formControlName="salary"
+                placeholder="1000"
+              />
+              @if (fieldNote('salary')) {
+                <small class="field-error">{{ fieldNote('salary') }}</small>
+              }
+            </div>
+
+            <div>
+              <label class="field-label" for="date_of_joining">Joining Date</label>
+              <input
+                appFocusViolet
+                id="date_of_joining"
+                type="date"
+                class="orchid-input"
+                formControlName="date_of_joining"
+              />
+              @if (fieldNote('date_of_joining')) {
+                <small class="field-error">{{ fieldNote('date_of_joining') }}</small>
+              }
+            </div>
+          </div>
+
+          <div>
+            <label class="field-label" for="employee_photo">Profile Picture</label>
+            <input
+              id="employee_photo"
+              type="file"
+              class="orchid-input"
+              accept="image/*"
+              (change)="onPhotoPicked($event)"
+            />
+            <small class="helper-copy d-block mt-2">
+              {{ isEditMode
+                ? 'Leave it unchanged to keep the current photo.'
+                : 'Choose one image file to upload with the employee record.' }}
+            </small>
+          </div>
+
+          <div class="action-row">
+            <button
+              class="solid-orchid-button"
+              type="submit"
+              [disabled]="isPageBusy || isPhotoEncoding"
+            >
+              {{
+                isPageBusy
+                  ? 'Saving...'
+                  : isEditMode
+                    ? 'Update Employee'
+                    : 'Save Employee'
+              }}
+            </button>
+            <button class="ghost-orchid-button" type="button" (click)="cancelEditor()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </article>
+
+      <article class="orchid-card preview-card">
+        <div class="card-topline">
+          <div>
+            <p class="eyebrow-label">Preview</p>
+            <h2 class="section-title mb-1">Employee photo</h2>
+            <p class="section-copy mb-0">Selected image preview for the current record.</p>
+          </div>
+          <span class="soft-pill">{{ isPhotoEncoding ? 'Reading image' : 'Ready' }}</span>
+        </div>
+
+        <div class="preview-frame">
+          @if (photoPreview) {
+            <img [src]="photoPreview" alt="Employee preview" class="preview-image" />
+          } @else {
+            <div class="empty-state">No image selected yet.</div>
+          }
+        </div>
+      </article>
+    </section>
+  </div>
+</section>

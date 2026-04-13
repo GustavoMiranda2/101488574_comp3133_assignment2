@@ -1,0 +1,91 @@
+<section class="midnight-page">
+  <div class="page-shell container py-4 py-lg-5">
+    <div class="auth-grid">
+      <article class="hero-shell auth-story">
+        <p class="eyebrow-label">Employee Management App</p>
+        <h1 class="hero-title">Manage your employee roster with a clear purple control desk.</h1>
+        <p class="hero-copy">
+          Sign in to review staff, search by department or position, and keep the employee
+          directory updated from one clean workspace.
+        </p>
+
+        <div class="story-points">
+          <div class="story-chip">
+            <span class="story-chip-title">GraphQL flow</span>
+            <small>Login, signup and employee CRUD connected to the backend.</small>
+          </div>
+          <div class="story-chip">
+            <span class="story-chip-title">Responsive layout</span>
+            <small>Balanced cards and forms with readable contrast.</small>
+          </div>
+          <div class="story-chip">
+            <span class="story-chip-title">Current session</span>
+            <small>Stored locally so the app can preserve your entry state.</small>
+          </div>
+        </div>
+      </article>
+
+      <article class="orchid-card auth-card">
+        <div class="card-topline">
+          <div>
+            <p class="eyebrow-label">Welcome back</p>
+            <h2 class="section-title mb-1">Login</h2>
+            <p class="section-copy mb-0">
+              Use your username or email with the password from the backend account.
+            </p>
+          </div>
+          <span class="soft-pill">Session ready</span>
+        </div>
+
+        @if (entryFlash) {
+          <div class="alert-strip danger-strip">{{ entryFlash }}</div>
+        }
+
+        <form [formGroup]="authSparkForm" (ngSubmit)="submitSpark()" class="form-stack">
+          <div>
+            <label class="field-label" for="identity">Username or Email</label>
+            <input
+              appFocusViolet
+              id="identity"
+              type="text"
+              class="orchid-input"
+              formControlName="identity"
+              placeholder="gustavo or gustavo@email.com"
+            />
+            @if (fieldNote('identity')) {
+              <small class="field-error">{{ fieldNote('identity') }}</small>
+            }
+          </div>
+
+          <div>
+            <label class="field-label" for="password">Password</label>
+            <input
+              appFocusViolet
+              id="password"
+              type="password"
+              class="orchid-input"
+              formControlName="password"
+              placeholder="Enter your password"
+            />
+            @if (fieldNote('password')) {
+              <small class="field-error">{{ fieldNote('password') }}</small>
+            }
+          </div>
+
+          <div class="action-row">
+            <button class="solid-orchid-button" type="submit" [disabled]="isSendingSpark">
+              {{ isSendingSpark ? 'Signing in...' : 'Login' }}
+            </button>
+            <a routerLink="/signup" class="ghost-orchid-button text-decoration-none text-center">
+              Create account
+            </a>
+          </div>
+        </form>
+
+        <div class="helper-copy">
+          Session holder: <strong>{{ signedUserHint }}</strong>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

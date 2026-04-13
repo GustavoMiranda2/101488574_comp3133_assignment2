@@ -1,0 +1,191 @@
+<section class="midnight-page">
+  <div class="page-shell container py-4">
+    <header class="hero-shell mb-4">
+      <div>
+        <p class="eyebrow-label">Employee Management App</p>
+        <h1 class="hero-title">Employees list</h1>
+        <p class="hero-copy">
+          Review the full roster, search by department or position, and manage records from one
+          organized table.
+        </p>
+      </div>
+
+      <div class="hero-action-stack">
+        <div class="profile-chip">Signed in as <strong>{{ signedUserName }}</strong></div>
+        <div class="action-row action-row-tight">
+          <a routerLink="/employees/new" class="solid-orchid-button text-decoration-none">
+            Add Employee
+          </a>
+          <button type="button" class="ghost-orchid-button" (click)="goLogout()">Logout</button>
+        </div>
+      </div>
+    </header>
+
+    <section class="metric-grid mb-4">
+      <article class="orchid-card metric-card">
+        <span class="metric-label">All Employees</span>
+        <strong class="metric-value">{{ orchidRoster.length }}</strong>
+      </article>
+      <article class="orchid-card metric-card">
+        <span class="metric-label">Visible Results</span>
+        <strong class="metric-value">{{ visibleRoster.length }}</strong>
+      </article>
+      <article class="orchid-card metric-card">
+        <span class="metric-label">Search Mode</span>
+        <strong class="metric-value">{{ searchModeActive ? 'On' : 'Off' }}</strong>
+      </article>
+    </section>
+
+    <section class="orchid-card mb-4">
+      <div class="card-topline">
+        <div>
+          <p class="eyebrow-label">Search employees</p>
+          <h2 class="section-title mb-1">Department or Position</h2>
+          <p class="section-copy mb-0">
+            Use either field, or combine both, to narrow the visible employee table.
+          </p>
+        </div>
+        @if (searchModeActive) {
+          <span class="soft-pill">Search results</span>
+        }
+      </div>
+
+      <form [formGroup]="searchRibbonForm" (ngSubmit)="runRibbonSearch()" class="row g-3">
+        <div class="col-md-5">
+          <label class="field-label" for="department">Department</label>
+          <input
+            appFocusViolet
+            id="department"
+            type="text"
+            class="orchid-input"
+            formControlName="department"
+            placeholder="Human Resources"
+          />
+        </div>
+
+        <div class="col-md-5">
+          <label class="field-label" for="designation">Position</label>
+          <input
+            appFocusViolet
+            id="designation"
+            type="text"
+            class="orchid-input"
+            formControlName="designation"
+            placeholder="Software Engineer"
+          />
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+          <div class="w-100 action-row action-row-compact">
+            <button class="solid-orchid-button w-100" type="submit" [disabled]="isFilterBusy">
+              {{ isFilterBusy ? 'Searching...' : 'Search' }}
+            </button>
+            <button class="ghost-orchid-button w-100" type="button" (click)="clearRibbon()">
+              Clear
+            </button>
+          </div>
+        </div>
+      </form>
+
+      @if (searchSummary) {
+        <div class="helper-copy mt-3">{{ searchSummary }}</div>
+      }
+    </section>
+
+    <section class="orchid-card">
+      <div class="card-topline">
+        <div>
+          <p class="eyebrow-label">Roster table</p>
+          <h2 class="section-title mb-1">Current employees</h2>
+          <p class="section-copy mb-0">
+            The table below supports viewing, updating and deleting each employee record.
+          </p>
+        </div>
+        <span class="soft-pill">{{ visibleRoster.length }} row(s)</span>
+      </div>
+
+      @if (pageFlash) {
+        <div class="alert-strip">{{ pageFlash }}</div>
+      }
+
+      @if (isRosterBusy) {
+        <div class="empty-state">Loading employees...</div>
+      } @else {
+        <div class="table-wrap">
+          <table class="table orchid-table align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Position</th>
+                <th>Email</th>
+                <th>Salary</th>
+                <th>Joined</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (visibleRoster.length > 0) {
+                @for (employeeBloom of visibleRoster; track employeeBloom._id) {
+                  <tr>
+                    <td>
+                      <div class="person-cell">
+                        <img
+                          [src]="employeeBloom.employee_photo"
+                          [alt]="employeeBloom.first_name + ' photo'"
+                          class="avatar-chip"
+                        />
+                        <div>
+                          <strong class="d-block">
+                            {{ employeeBloom.first_name }} {{ employeeBloom.last_name }}
+                          </strong>
+                          <small class="text-secondary-emphasis">{{ employeeBloom.gender }}</small>
+                        </div>
+                      </div>
+                    </td>
+                    <td>{{ employeeBloom.department }}</td>
+                    <td>{{ employeeBloom.designation }}</td>
+                    <td>{{ employeeBloom.email }}</td>
+                    <td>{{ employeeBloom.salary | plumSalary }}</td>
+                    <td>{{ employeeBloom.date_of_joining | date: 'mediumDate' }}</td>
+                    <td class="text-end">
+                      <div class="action-row action-row-tight justify-content-end">
+                        <a
+                          [routerLink]="['/employees', employeeBloom._id]"
+                          class="action-pill action-pill-view text-decoration-none"
+                        >
+                          View
+                        </a>
+                        <a
+                          [routerLink]="['/employees', employeeBloom._id, 'edit']"
+                          class="action-pill action-pill-edit text-decoration-none"
+                        >
+                          Update
+                        </a>
+                        <button
+                          type="button"
+                          class="action-pill action-pill-delete"
+                          (click)="eraseEmployee(employeeBloom)"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              } @else {
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-state">
+                      No employees match the current list or search filters.
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  </div>
+</section>

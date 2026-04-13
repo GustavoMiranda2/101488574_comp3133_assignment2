@@ -1,0 +1,39 @@
+.auth-grid {
+  display: grid;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.auth-story,
+.auth-card {
+  min-height: 100%;
+}
+
+.story-points {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.5rem;
+}
+
+.story-chip-title {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.split-fields {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 992px) {
+  .auth-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .split-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
